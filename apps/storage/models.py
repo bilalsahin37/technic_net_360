@@ -39,4 +39,4 @@ class SparePart(models.Model):
 
     class Meta:
         verbose_name = _("Yedek Parça")
-        verbose_name_plural = _("Yedek Parçalar")
+        verbose_name_plural = _("Yedek Parçalar")  
