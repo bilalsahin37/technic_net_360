@@ -4,8 +4,26 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth.models import User
 
-from apps.vehicle.models import Vehicle
-from apps.storage.models import SparePart
+
+class Customer(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50, verbose_name="Ad")
+    last_name = models.CharField(max_length=50, verbose_name="Soyad")
+    email = models.EmailField(verbose_name="E-posta")
+    phone = models.CharField(max_length=20, verbose_name="Telefon")
+    address = models.TextField(verbose_name="Adres")
+
+    class Meta:
+        verbose_name = "Müşteri"
+        verbose_name_plural = "Müşteriler"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+
+
+
 
 
 
@@ -25,9 +43,11 @@ class WorkFlow(models.Model):
 
 
 
+
+
 class ServiceAppointment(models.Model):
     """Servis randevularını tutan model"""
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, verbose_name=_("Araç"))
+    vehicle = models.ForeignKey('Vehicle', on_delete=models.CASCADE, verbose_name=_("Araç"))
     appointment_date = models.DateTimeField(verbose_name=_("Randevu Tarihi"))
     description = models.TextField(verbose_name=_("Sorun Açıklaması"))
     workflow_status = models.ForeignKey(WorkFlow, on_delete=models.SET_NULL, null=True, verbose_name=_("Durum"))
@@ -43,10 +63,6 @@ class ServiceAppointment(models.Model):
     class Meta:
         verbose_name = _("Servis Randevusu")
         verbose_name_plural = _("Servis Randevuları")
-
-
-
-
 
 
 class ServiceRecord(models.Model):
@@ -69,9 +85,6 @@ class ServiceRecord(models.Model):
         verbose_name_plural = _("Servis Kayıtları")
 
 
-
-
-
 class ServiceDetail(models.Model):
     """Servis detaylarını tutan model"""
     service_record = models.ForeignKey(ServiceRecord, on_delete=models.CASCADE, verbose_name=_("Servis Kaydı"))
@@ -84,8 +97,40 @@ class ServiceDetail(models.Model):
         return f"{self.service_type} - {self.service_record}"
 
 
+class Vehicle(models.Model):
+    """Araç bilgilerini tutan model"""
 
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        verbose_name=_("Araç Sahibi"),
+    )
+    brand = models.ForeignKey(
+        "VehicleBrand", on_delete=models.PROTECT, verbose_name=_("Marka")
+    )
+    model = models.ForeignKey(
+        "VehicleModel", on_delete=models.PROTECT, verbose_name=_("Model")
+    )
+    year = models.PositiveIntegerField(verbose_name=_("Model Yılı"))
+    plate_number = models.CharField(max_length=20, unique=True, verbose_name=_("Plaka"))
+    vin = models.CharField(max_length=17, unique=True, verbose_name=_("Şasi No"))
+    color = models.CharField(max_length=50, verbose_name=_("Renk"))
+    mileage = models.PositiveIntegerField(verbose_name=_("Kilometre"))
+    fuel_type = models.ForeignKey(
+        "FuelType", on_delete=models.PROTECT, verbose_name=_("Yakıt Tipi")
+    )
+    transmission = models.ForeignKey(
+        "TransmissionType", on_delete=models.PROTECT, verbose_name=_("Vites Tipi")
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"{self.brand} {self.model} - {self.plate_number}"
+
+    class Meta:
+        verbose_name = _("Araç")
+        verbose_name_plural = _("Araçlar")
 
 
 class PartUsage(models.Model):
@@ -104,10 +149,43 @@ class PartUsage(models.Model):
         return f"{self.spare_part} - {self.service_record}"
 
 
+class SparePart(models.Model):
+    """Yedek parça bilgilerini tutan model"""
 
+    name = models.CharField(max_length=200, verbose_name=_("Parça Adı"))
+    part_number = models.CharField(
+        max_length=50, unique=True, verbose_name=_("Parça Numarası")
+    )
+    brand = models.CharField(max_length=100, verbose_name=_("Marka"))
+    compatible_models = models.ManyToManyField(
+        Vehicle, related_name="spare_parts", verbose_name=_("Uyumlu Modeller")
+    )
+    stock_quantity = models.PositiveIntegerField(verbose_name=_("Stok Miktarı"))
+    min_stock_level = models.PositiveIntegerField(
+        verbose_name=_("Minimum Stok Seviyesi")
+    )
+    purchase_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name=_("Alış Fiyatı")
+    )
+    selling_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name=_("Satış Fiyatı")
+    )
+    location = models.CharField(max_length=50, verbose_name=_("Depo Konumu"))
+    description = models.TextField(blank=True, null=True, verbose_name=_("Açıklama"))
+    created_at = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Oluşturulma Tarihi")
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name=_("Güncelleme Tarihi")
+    )
 
+    def __str__(self):
+        return f"{self.name} - {self.part_number}"
 
-
+    class Meta:
+        verbose_name = _("Yedek Parça")
+        verbose_name_plural = _("Yedek Parçalar")
+        ordering = ["-created_at"]
 
 
 class ServiceType(models.Model):
@@ -127,12 +205,6 @@ class ServiceType(models.Model):
         verbose_name_plural = _("Servis Tipleri")
 
 
-
-
-
-
-
-
 class VehicleBrand(models.Model):
     """Araç markalarını tutan model"""
     name = models.CharField(max_length=100, unique=True, verbose_name=_("Marka"))
@@ -145,10 +217,6 @@ class VehicleBrand(models.Model):
     class Meta:
         verbose_name = _("Araç Markası")
         verbose_name_plural = _("Araç Markaları")
-
-
-
-
 
 
 class VehicleModel(models.Model):
@@ -166,10 +234,6 @@ class VehicleModel(models.Model):
         verbose_name_plural = _("Araç Modelleri")
 
 
-
-
-
-
 class FuelType(models.Model):
     """Yakıt tiplerini tutan model"""
     name = models.CharField(max_length=50, unique=True, verbose_name=_("Yakıt Tipi"))
@@ -182,10 +246,6 @@ class FuelType(models.Model):
     class Meta:
         verbose_name = _("Yakıt Tipi")
         verbose_name_plural = _("Yakıt Tipleri")
-
-
-
-
 
 
 class TransmissionType(models.Model):

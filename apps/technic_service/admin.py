@@ -1,71 +1,67 @@
-# apps/service/admin.py
-
 from django.contrib import admin
-from django.utils.translation import gettext_lazy as _
-from .models import *
+from .models import (
+    Customer,
+    WorkFlow,
+    ServiceAppointment,
+    ServiceRecord,
+    ServiceDetail,
+    Vehicle,
+    PartUsage,
+    SparePart,
+    ServiceType,
+    VehicleBrand,
+    VehicleModel,
+    FuelType,
+    TransmissionType,
+)
 
 
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ("first_name", "last_name", "email", "phone")
+    search_fields = ("first_name", "last_name", "email", "phone")
+    list_filter = ("first_name", "last_name")
+
+
+@admin.register(WorkFlow)
 class WorkFlowAdmin(admin.ModelAdmin):
     list_display = ("name", "created_at", "updated_at")
     search_fields = ("name",)
-    list_filter = ("created_at",)
-    ordering = ("-created_at",)
+    list_filter = ("created_at", "updated_at")
 
 
-admin.site.register(WorkFlow, WorkFlowAdmin)
-
-
+@admin.register(ServiceAppointment)
 class ServiceAppointmentAdmin(admin.ModelAdmin):
-    list_display = (
-        "vehicle",
-        "appointment_date",
-        "workflow_status",
-        "technician",
-        "estimated_completion",
-    )
-    list_filter = ("appointment_date", "workflow_status", "technician")
-    search_fields = ("vehicle__plate", "description")
-    raw_id_fields = ("vehicle", "technician")
-    date_hierarchy = "appointment_date"
+    list_display = ("vehicle", "appointment_date", "workflow_status", "technician")
+    search_fields = ("vehicle__plate_number", "technician__username")
+    list_filter = ("appointment_date", "workflow_status")
 
 
-admin.site.register(ServiceAppointment, ServiceAppointmentAdmin)
-
-
-class ServiceDetailInline(admin.TabularInline):
-    model = ServiceDetail
-    extra = 1
-    fields = ("service_type", "cost", "labor_hours", "notes")
-
-
-class PartUsageInline(admin.TabularInline):
-    model = PartUsage
-    extra = 1
-    fields = ("spare_part", "quantity", "unit_cost", "total_cost")
-    readonly_fields = ("total_cost",)
-
-
+@admin.register(ServiceRecord)
 class ServiceRecordAdmin(admin.ModelAdmin):
-    list_display = ("appointment", "completion_date", "total_cost", "warranty_end_date")
+    list_display = ("appointment", "total_cost", "completion_date", "warranty_end_date")
+    search_fields = ("appointment__vehicle__plate_number",)
     list_filter = ("completion_date", "warranty_end_date")
-    search_fields = ("appointment__vehicle__plate", "notes")
-    inlines = [ServiceDetailInline, PartUsageInline]
-    raw_id_fields = ("appointment",)
-    date_hierarchy = "completion_date"
 
 
-admin.site.register(ServiceRecord, ServiceRecordAdmin)
-
-
+@admin.register(ServiceDetail)
 class ServiceDetailAdmin(admin.ModelAdmin):
     list_display = ("service_record", "service_type", "cost", "labor_hours")
+    search_fields = (
+        "service_record__appointment__vehicle__plate_number",
+        "service_type__name",
+    )
     list_filter = ("service_type",)
-    raw_id_fields = ("service_record",)
 
 
-admin.site.register(ServiceDetail, ServiceDetailAdmin)
+@admin.register(Vehicle)
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ("brand", "model", "year", "plate_number", "vin", "owner")
+    search_fields = ("plate_number", "vin", "owner__username")
+    list_filter = ("brand", "model", "year", "fuel_type", "transmission")
 
 
+@admin.register(PartUsage)
 class PartUsageAdmin(admin.ModelAdmin):
     list_display = (
         "service_record",
@@ -74,55 +70,47 @@ class PartUsageAdmin(admin.ModelAdmin):
         "unit_cost",
         "total_cost",
     )
+    search_fields = (
+        "service_record__appointment__vehicle__plate_number",
+        "spare_part__name",
+    )
     list_filter = ("spare_part",)
-    raw_id_fields = ("service_record", "spare_part")
-    readonly_fields = ("total_cost",)
 
 
-admin.site.register(PartUsage, PartUsageAdmin)
+@admin.register(SparePart)
+class SparePartAdmin(admin.ModelAdmin):
+    list_display = ("name", "part_number", "brand", "stock_quantity", "selling_price")
+    search_fields = ("name", "part_number", "brand")
+    list_filter = ("brand",)
 
 
+@admin.register(ServiceType)
 class ServiceTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "standard_price", "estimated_time")
     search_fields = ("name",)
     list_filter = ("standard_price",)
 
 
-admin.site.register(ServiceType, ServiceTypeAdmin)
-
-
+@admin.register(VehicleBrand)
 class VehicleBrandAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name",)
     search_fields = ("name",)
-    list_filter = ("created_at",)
 
 
-admin.site.register(VehicleBrand, VehicleBrandAdmin)
-
-
+@admin.register(VehicleModel)
 class VehicleModelAdmin(admin.ModelAdmin):
-    list_display = ("brand", "name", "created_at")
-    search_fields = ("brand__name", "name")
-    list_filter = ("brand", "created_at")
-    raw_id_fields = ("brand",)
+    list_display = ("brand", "name")
+    search_fields = ("name", "brand__name")
+    list_filter = ("brand",)
 
 
-admin.site.register(VehicleModel, VehicleModelAdmin)
-
-
+@admin.register(FuelType)
 class FuelTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name",)
     search_fields = ("name",)
-    list_filter = ("created_at",)
 
 
-admin.site.register(FuelType, FuelTypeAdmin)
-
-
+@admin.register(TransmissionType)
 class TransmissionTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "created_at")
+    list_display = ("name",)
     search_fields = ("name",)
-    list_filter = ("created_at",)
-
-
-admin.site.register(TransmissionType, TransmissionTypeAdmin)

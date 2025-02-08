@@ -42,10 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
 # Custom Apps
-    'apps.storage',
     'apps.userauths',
-    'apps.vehicle',
-    'apps.customer',
     'apps.corporation',
     'apps.technic_service',
     'apps.location',

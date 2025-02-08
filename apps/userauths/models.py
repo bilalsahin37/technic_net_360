@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=100, help_text=_("User's last name."), verbose_name=_("Soyisim")
     )
     birth_date = models.DateField(
-        help_text=_("User's birth date."), verbose_name=_("Doğum Tarihi")
+        help_text=_("User's birth date."), verbose_name=_("Doğum Tarihi"), null=True, blank=True
     )
     gender = models.ForeignKey(
         "Gender",
