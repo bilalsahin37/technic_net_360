@@ -37,3 +37,22 @@ class Unit(models.Model):
 
 
 
+class SubUnit(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alt Birim Adı")
+    sub_unit_number = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alt Birim Numarası")
+    corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Kurum")
+    unit = models.ForeignKey(Unit, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Birim")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        verbose_name_plural = 'Alt Departmanlar'
+        verbose_name = 'Alt Departman'
+
+    def __str__(self):
+        return self.name
+
+
+
+
+

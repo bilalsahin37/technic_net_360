@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Corporation, Unit
+from .models import Corporation, Unit, SubUnit
 
 
 @admin.register(Corporation)
@@ -21,3 +21,14 @@ class UnitAdmin(admin.ModelAdmin):
     list_per_page = 20
     ordering = ("-created_at",)
     autocomplete_fields = ["corporation"]  # Kurum arama için otomatik tamamlama
+
+
+@admin.register(SubUnit)
+class SubUnitAdmin(admin.ModelAdmin):
+    list_display = ("name", "sub_unit_number", "unit", "corporation", "created_at", "updated_at")
+    search_fields = ("name", "sub_unit_number", "unit__name")
+    list_filter = ("unit", "created_at", "updated_at")
+    date_hierarchy = "created_at"
+    list_per_page = 20
+    ordering = ("-created_at",)
+    autocomplete_fields = ["unit"]
