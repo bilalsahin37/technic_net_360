@@ -33,9 +33,6 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
-
-
-
 # Optimize Edilmiş Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
@@ -46,14 +43,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     phone_number = models.CharField(
         max_length=15,
+        blank=True,
+        null=True,
         help_text=_("Primary phone number."),
         verbose_name=_("Telefon Numarası"),
     )
     first_name = models.CharField(
-        max_length=100, help_text=_("User's first name."), verbose_name=_("İsim")
+        max_length=100,
+        help_text=_("User's first name."),
+        blank=True,
+        null=True,
+        verbose_name=_("İsim"),
     )
     last_name = models.CharField(
-        max_length=100, help_text=_("User's last name."), verbose_name=_("Soyisim")
+        max_length=100,
+        help_text=_("User's last name."),
+        blank=True,
+        null=True,
+        verbose_name=_("Soyisim"),
     )
     birth_date = models.DateField(
         help_text=_("User's birth date."), verbose_name=_("Doğum Tarihi"), null=True, blank=True
@@ -61,6 +68,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender = models.ForeignKey(
         "Gender",
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         help_text=_("User's gender."),
         verbose_name=_("Cinsiyet"),
@@ -88,6 +96,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     job = models.ForeignKey(
         "Job",
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         help_text=_("User's job."),
         verbose_name=_("Meslek"),
@@ -110,7 +119,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_("User's duty."),
         verbose_name=_("Görev"),
     )
-    
+
     place_of_work = models.ForeignKey(Corporation,
         on_delete=models.SET_NULL,
         null=True,
@@ -126,7 +135,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text=_("User's place of work department."),
         verbose_name=_("Departman"),
     )
-    
 
     language = models.ForeignKey(
         "Language",
@@ -152,6 +160,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     education_level = models.ForeignKey(
         "EducationLevel",
         on_delete=models.SET_NULL,
+        blank=True,
         null=True,
         help_text=_("User's education level."),
         verbose_name=_("Eğitim Seviyesi"),
@@ -220,16 +229,15 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Kullanıcılar")
 
 
-
-
-
-
-
-
-
 # Destekleyici Model: Gender
 class Gender(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name=_("Cinsiyet Adı"))
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        blank=True,
+        null=True,
+        verbose_name=_("Cinsiyet Adı"),
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -241,15 +249,10 @@ class Gender(models.Model):
         verbose_name_plural = _("Cinsiyetler")
 
 
-
-
-
-
-
-
-
 class Nationality(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name=_("Uyruk Adı"))
+    name = models.CharField(
+        max_length=100, unique=True, blank=True, null=True, verbose_name=_("Uyruk Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -261,16 +264,10 @@ class Nationality(models.Model):
         verbose_name_plural = _("Uyruklar")
 
 
-
-
-
-
-
-
 # Destekleyici Model: Job
 class Job(models.Model):
     job_name = models.CharField(
-        max_length=100, unique=True, verbose_name=_("Meslek Adı")
+        max_length=100, unique=True, blank=True, null=True, verbose_name=_("Meslek Adı")
     )
     description = models.TextField(max_length=500, blank=True, null=True, verbose_name=_("Açıklama"))
     created_at = models.DateTimeField(auto_now_add=True)
@@ -282,11 +279,6 @@ class Job(models.Model):
     class Meta:
         verbose_name = _("Meslek")
         verbose_name_plural = _("Meslekler")
-
-
-
-
-
 
 
 # Destekleyici Model: Speciality
@@ -309,11 +301,6 @@ class Speciality(models.Model):
         verbose_name_plural = _("Uzmanlıklar")
 
 
-
-
-
-
-
 # Destekleyici Model: Duty
 class Duty(models.Model):
     name = models.CharField(
@@ -328,11 +315,6 @@ class Duty(models.Model):
     class Meta:
         verbose_name = _("Görev")
         verbose_name_plural = _("Görevler")
-
-
-
-
-
 
 
 # Destekleyici Model: Profile
@@ -369,12 +351,6 @@ class Profile(models.Model):
         verbose_name_plural = _("Profiller")
 
 
-
-
-
-
-
-
 # Destekleyici Model: Address
 class Address(models.Model):
     user = models.ForeignKey(
@@ -383,13 +359,21 @@ class Address(models.Model):
         related_name="addresses",
         verbose_name=_("Kullanıcı"),
     )
-    street = models.CharField(max_length=255, verbose_name=_("Sokak"))
-    city = models.CharField(max_length=100, verbose_name=_("Şehir"))
+    street = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name=_("Sokak")
+    )
+    city = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_("Şehir")
+    )
     state = models.CharField(
         max_length=100, blank=True, null=True, verbose_name=_("Eyalet")
     )
-    postal_code = models.CharField(max_length=20, verbose_name=_("Posta Kodu"))
-    country = models.CharField(max_length=100, verbose_name=_("Ülke"))
+    postal_code = models.CharField(
+        max_length=20, blank=True, null=True, verbose_name=_("Posta Kodu")
+    )
+    country = models.CharField(
+        max_length=100, blank=True, null=True, verbose_name=_("Ülke")
+    )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Oluşturulma Tarihi")
     )
@@ -405,11 +389,6 @@ class Address(models.Model):
         verbose_name_plural = _("Adresler")
 
 
-
-
-
-
-
 # Destekleyici Model: SocialMediaProfile
 class SocialMediaProfile(models.Model):
     user = models.ForeignKey(
@@ -418,8 +397,10 @@ class SocialMediaProfile(models.Model):
         related_name="social_profiles",
         verbose_name=_("Kullanıcı"),
     )
-    platform = models.CharField(max_length=50, verbose_name=_("Platform"))
-    url = models.URLField(verbose_name=_("Profil Linki"))
+    platform = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Platform")
+    )
+    url = models.URLField(blank=True, null=True, verbose_name=_("Profil Linki"))
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Oluşturulma Tarihi")
     )
@@ -435,11 +416,6 @@ class SocialMediaProfile(models.Model):
         verbose_name_plural = _("Sosyal Profiller")
 
 
-
-
-
-
-
 # Destekleyici Model: UserPreference
 class UserPreference(models.Model):
     user = models.OneToOneField(
@@ -449,13 +425,21 @@ class UserPreference(models.Model):
         verbose_name=_("Kullanıcı"),
     )
     language = models.CharField(
-        max_length=50, default="tr", verbose_name=_("Dil Tercihi")
+        max_length=50,
+        blank=True,
+        null=True,
+        default="tr",
+        verbose_name=_("Dil Tercihi"),
     )
     theme = models.CharField(
-        max_length=50, default="light", verbose_name=_("Tema Tercihi")
+        max_length=50,
+        blank=True,
+        null=True,
+        default="light",
+        verbose_name=_("Tema Tercihi"),
     )
     receive_newsletter = models.BooleanField(
-        default=True, verbose_name=_("Bülten Alıyor mu?")
+        default=True, blank=True, null=True, verbose_name=_("Bülten Alıyor mu?")
     )
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Oluşturulma Tarihi")
@@ -472,13 +456,10 @@ class UserPreference(models.Model):
         verbose_name_plural = _("Kullanıcı Tercihleri")
 
 
-
-
-
-
-
 class EducationLevel(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Eğitim Seviyesi Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Eğitim Seviyesi Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -489,12 +470,10 @@ class EducationLevel(models.Model):
         verbose_name_plural = _("Eğitim Seviyeleri")
 
 
-
-
-
-
 class EducationField(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Eğitim Alanı Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Eğitim Alanı Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -505,12 +484,10 @@ class EducationField(models.Model):
         verbose_name_plural = _("Eğitim Alanları")
 
 
-
-
-
-
 class School(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Okul Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Okul Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -521,13 +498,17 @@ class School(models.Model):
         verbose_name_plural = _("Okullar")
 
 
-
-
-
-
 class SchoolDepartment(models.Model):
-    school = models.ForeignKey('School', on_delete=models.CASCADE, verbose_name=_("Okul"))
-    name = models.CharField(max_length=50, verbose_name=_("Okul Departmanı Adı"))
+    school = models.ForeignKey(
+        "School",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        verbose_name=_("Okul"),
+    )
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Okul Departmanı Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -538,12 +519,11 @@ class SchoolDepartment(models.Model):
         verbose_name_plural = _("Okul Departmanları")
 
 
-
-
-
 # Destekleyici Model: UserActivity
 class Language(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Dil Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Dil Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -554,12 +534,10 @@ class Language(models.Model):
         verbose_name_plural = _("Diller")
 
 
-
-
-
-
 class Talent(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Yetenek Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Yetenek Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -570,12 +548,10 @@ class Talent(models.Model):
         verbose_name_plural = _("Yetenekler")
 
 
-
-
-
-
 class Hobby(models.Model):
-    name = models.CharField(max_length=50, verbose_name=_("Hobi Adı"))
+    name = models.CharField(
+        max_length=50, blank=True, null=True, verbose_name=_("Hobi Adı")
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

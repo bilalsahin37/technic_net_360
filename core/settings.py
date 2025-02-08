@@ -137,3 +137,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'userauths.User'
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Technic Service",
+    "site_header": "Technic Service",
+    "site_brand": "Technic Service 360",
+    #"site_logo": "images/logo.png",
+    "welcome_sign": "Welcome to Technic Service",
+}
