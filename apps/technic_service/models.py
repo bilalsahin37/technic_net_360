@@ -25,6 +25,10 @@ class Customer(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 
+
+
+
+
 class WorkFlow(models.Model):
     """İş akışını tutan model"""
     name = models.CharField(max_length=100, verbose_name=_("İş Akışı Durumu"))
@@ -38,6 +42,12 @@ class WorkFlow(models.Model):
     class Meta:
         verbose_name = _("İş Akışı")
         verbose_name_plural = _("İş Akışları")
+
+
+
+
+
+
 
 
 class ServiceAppointment(models.Model):
@@ -78,6 +88,12 @@ class ServiceAppointment(models.Model):
         verbose_name_plural = _("Servis Randevuları")
 
 
+
+
+
+
+
+
 class ServiceRecord(models.Model):
     """Yapılan servis işlemlerinin kaydını tutan model"""
     appointment = models.ForeignKey(
@@ -112,6 +128,12 @@ class ServiceRecord(models.Model):
         verbose_name_plural = _("Servis Kayıtları")
 
 
+
+
+
+
+
+
 class ServiceDetail(models.Model):
     """Servis detaylarını tutan model"""
     service_record = models.ForeignKey(
@@ -142,6 +164,13 @@ class ServiceDetail(models.Model):
 
     def __str__(self):
         return f"{self.service_type} - {self.service_record}"
+
+
+
+
+
+
+
 
 
 class Vehicle(models.Model):
@@ -206,6 +235,13 @@ class Vehicle(models.Model):
         verbose_name_plural = _("Araçlar")
 
 
+
+
+
+
+
+
+
 class PartUsage(models.Model):
     """Kullanılan yedek parçaların kaydını tutan model"""
     service_record = models.ForeignKey(
@@ -249,6 +285,11 @@ class PartUsage(models.Model):
 
     def __str__(self):
         return f"{self.spare_part} - {self.service_record}"
+
+
+
+
+
 
 
 class SparePart(models.Model):
@@ -310,6 +351,12 @@ class SparePart(models.Model):
         ordering = ["-created_at"]
 
 
+
+
+
+
+
+
 class ServiceType(models.Model):
     """Servis tiplerini tutan model"""
     name = models.CharField(
@@ -347,6 +394,13 @@ class ServiceType(models.Model):
         verbose_name_plural = _("Servis Tipleri")
 
 
+
+
+
+
+
+
+
 class VehicleBrand(models.Model):
     """Araç markalarını tutan model"""
     name = models.CharField(
@@ -361,6 +415,12 @@ class VehicleBrand(models.Model):
     class Meta:
         verbose_name = _("Araç Markası")
         verbose_name_plural = _("Araç Markaları")
+
+
+
+
+
+
 
 
 class VehicleModel(models.Model):
@@ -386,6 +446,12 @@ class VehicleModel(models.Model):
         verbose_name_plural = _("Araç Modelleri")
 
 
+
+
+
+
+
+
 class FuelType(models.Model):
     """Yakıt tiplerini tutan model"""
     name = models.CharField(
@@ -402,6 +468,11 @@ class FuelType(models.Model):
     class Meta:
         verbose_name = _("Yakıt Tipi")
         verbose_name_plural = _("Yakıt Tipleri")
+
+
+
+
+
 
 
 class TransmissionType(models.Model):
