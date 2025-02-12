@@ -27,8 +27,8 @@ class Unit(models.Model):
     
 
     class Meta:
-        verbose_name_plural = 'Departmanlar'
-        verbose_name = 'Departman'
+        verbose_name_plural = 'Birimler'
+        verbose_name = 'Birim'
 
     def __str__(self):
         return self.name
@@ -46,8 +46,8 @@ class SubUnit(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        verbose_name_plural = 'Alt Departmanlar'
-        verbose_name = 'Alt Departman'
+        verbose_name_plural = 'Alt Birimler'
+        verbose_name = 'Alt Birim'
 
     def __str__(self):
         return self.name
