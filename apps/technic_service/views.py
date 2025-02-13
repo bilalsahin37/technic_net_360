@@ -794,6 +794,7 @@ class TransmissionTypeCreateView(generic.CreateView):
 
 
 
+
 #  Vites Türü Düzenleme Sayfası
 class TransmissionTypeUpdateView(generic.UpdateView):
     model = models.TransmissionType
@@ -803,6 +804,8 @@ class TransmissionTypeUpdateView(generic.UpdateView):
     template_name = 'technic_service/transmissiontype_update_form.html'
     fields = '__all__'
     context_object_name = 'transmissiontypes'
+
+
 
 
 
