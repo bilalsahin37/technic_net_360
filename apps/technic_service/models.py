@@ -13,7 +13,7 @@ class Customer(models.Model):
     last_name = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="Soyad"
     )
-    email = models.EmailField(verbose_name="E-posta", unique=True, blank=True, null=True)
+    email = models.EmailField(verbose_name="E-Posta", unique=True, blank=True, null=True)
     phone = models.CharField(max_length=20, verbose_name="Telefon", unique=True, blank=True, null=True)
     address = models.TextField(verbose_name="Adres", blank=True, null=True)
 
