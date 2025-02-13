@@ -476,7 +476,7 @@ class FuelType(models.Model):
 
 
 class TransmissionType(models.Model):
-    """Şanzıman tiplerini tutan model"""
+    """Vites tiplerini tutan model"""
     name = models.CharField(
         max_length=50, unique=True, verbose_name=_("Vites Tipi")
     )
