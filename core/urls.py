@@ -23,13 +23,12 @@ from apps.userauths.views import  UserCreateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    
     path("", include("django.contrib.auth.urls")),
     path("signup/", UserCreateView.as_view(), name="user-create"),
-    path("accounts/", include("userauths.urls")),
-
+    # core/urls.py içinde
+    path("accounts/", include("apps.userauths.urls")),  # Doğru kullanım
     
-    path("technic_service/", include("technic_service.urls")),
-    path("location/", include("location.urls")),
-    path("corporation/", include("corporation.urls")),
+    path("technic_service/", include("apps.technic_service.urls")),
+    path("location/", include("apps.location.urls")),
+    path("corporation/", include("apps.corporation.urls")),
 ]
