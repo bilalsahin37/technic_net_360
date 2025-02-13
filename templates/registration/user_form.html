@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="row mt-5">
+        <div class="col"></div>
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-header text-success-emphasis">
+                    <h2>Technic Net 360</h2>
+                    <h5>Technic Net 360 Information Management Services</h5>
+                    <p>System User Login</p>
+                </div>
+                <div class="card-body text-start">
+                    <form method="post" action="{% url 'user-create' %}">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="d-grid gap-2">
+                            <input type="submit" value="Kayıt Ol" class="text-center btn fw-bold btn-outline-primary">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer d-grid gap-2">
+                    <a class="btn btn-outline-success fw-bold" href="{% url 'login' %}">Giriş Yap</a>
+                </div>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+{% endblock %}
