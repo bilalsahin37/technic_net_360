@@ -21,3 +21,5 @@ urlpatterns = [
     # Kullanıcı Detay Sayfası
     path("detail/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
 ]
+
+

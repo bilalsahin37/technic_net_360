@@ -14,28 +14,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path
 
-from apps.userauths.views import  UserCreateView
-
+from apps.userauths.views import UserCreateView
 
 urlpatterns = [
     # Yönetim Paneli
     path("admin/", admin.site.urls),
     # User Authentication: Kullanıcı kayıt, giriş vb.
     path("accounts/", include("apps.userauths.urls", namespace="userauths")),
+    path("signup/", UserCreateView.as_view()),
     # Corporation: Kurum bilgileri ve işlemleri
-    path("corporations/", include("apps.corporation.urls", namespace="corporation")),
+    path("corporations/", include("apps.corporation.urls")),
     # Technic Service: Teknik servis işlemleri
-    path(
-        "technic-service/",
-        include("apps.technic_service.urls", namespace="technic_service"),
-    ),
+    path("technic-service/", include("apps.technic_service.urls")),
     # Location: Konum ve yer bilgileri yönetimi
-    path("locations/", include("apps.location.urls", namespace="location")),
+    path("locations/", include("apps.location.urls")),
 ]
 
 # DEBUG modunda statik ve medya dosyaları için URL yapılandırması
