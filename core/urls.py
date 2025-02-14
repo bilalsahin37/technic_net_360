@@ -16,19 +16,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 from apps.userauths.views import  UserCreateView
 
 
 urlpatterns = [
+    # Yönetim Paneli
     path("admin/", admin.site.urls),
-    path("", include("django.contrib.auth.urls")),
-    path("signup/", UserCreateView.as_view(), name="user-create"),
-    # core/urls.py içinde
-    path("accounts/", include("apps.userauths.urls")),  # Doğru kullanım
-    
-    path("technic_service/", include("apps.technic_service.urls")),
-    path("location/", include("apps.location.urls")),
-    path("corporation/", include("apps.corporation.urls")),
+    # User Authentication: Kullanıcı kayıt, giriş vb.
+    path("accounts/", include("apps.userauths.urls", namespace="userauths")),
+    # Corporation: Kurum bilgileri ve işlemleri
+    path("corporations/", include("apps.corporation.urls", namespace="corporation")),
+    # Technic Service: Teknik servis işlemleri
+    path(
+        "technic-service/",
+        include("apps.technic_service.urls", namespace="technic_service"),
+    ),
+    # Location: Konum ve yer bilgileri yönetimi
+    path("locations/", include("apps.location.urls", namespace="location")),
 ]
+
+# DEBUG modunda statik ve medya dosyaları için URL yapılandırması
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

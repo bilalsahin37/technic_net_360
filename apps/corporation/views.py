@@ -1,205 +1,84 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy
-from django.views import generic
-from . import models
-from . import forms
+from .models import Corporation, Unit, SubUnit
 
 
-# Kurum Listeleme Sayfası
-class CorporationListView(generic.ListView):
-    model = models.Corporation
-    template_name = 'corporation/corporation_list.html'
-    context_object_name = 'corporations'
-    ordering = '-created_at'
-    queryset = models.Corporation.objects.all()
-    paginate_by = 10
+# Corporation Views
+class CorporationCreateView(CreateView):
+    model = Corporation
+    fields = ["name", "corporation_number"]
+    template_name = "corporation_form.html"
+    success_url = reverse_lazy("corporation_list")
 
 
+class CorporationUpdateView(UpdateView):
+    model = Corporation
+    fields = ["name", "corporation_number"]
+    template_name = "corporation_form.html"
+    success_url = reverse_lazy("corporation_list")
 
 
+class CorporationDeleteView(DeleteView):
+    model = Corporation
+    template_name = "corporation_confirm_delete.html"
+    success_url = reverse_lazy("corporation_list")
 
 
-# Kurum Ekleme Sayfası
-class CorporationCreateView(generic.CreateView):
-    model = models.Corporation
-    template_name = 'corporation/corporation_create.html'
-    form_class = forms.CorporationForm
-    success_url = reverse_lazy('corporation: corporation_list')  # Kurum listesi sayfasına yönlendirildir
+class CorporationListView(ListView):
+    model = Corporation
+    template_name = "corporation_list.html"
+    context_object_name = "corporations"
 
 
+# Unit Views
+class UnitCreateView(CreateView):
+    model = Unit
+    fields = ["name", "unit_number", "corporation"]
+    template_name = "unit_form.html"
+    success_url = reverse_lazy("unit_list")
 
 
+class UnitUpdateView(UpdateView):
+    model = Unit
+    fields = ["name", "unit_number", "corporation"]
+    template_name = "unit_form.html"
+    success_url = reverse_lazy("unit_list")
 
 
-# Kurum Düzenleme Sayfası
-class CorporationUpdateView(generic.UpdateView):
-    model = models.Corporation
-    template_name = 'corporation/corporation_update.html'
-    form_class = forms.CorporationForm
-    success_url = reverse_lazy('corporation: corporation_list')
-    success_message = 'Kurum basarıyla güncellendi.'
-    context_object_name = 'corporation'
+class UnitDeleteView(DeleteView):
+    model = Unit
+    template_name = "unit_confirm_delete.html"
+    success_url = reverse_lazy("unit_list")
 
 
+class UnitListView(ListView):
+    model = Unit
+    template_name = "unit_list.html"
+    context_object_name = "units"
 
 
+# SubUnit Views
+class SubUnitCreateView(CreateView):
+    model = SubUnit
+    fields = ["name", "sub_unit_number", "corporation", "unit"]
+    template_name = "subunit_form.html"
+    success_url = reverse_lazy("subunit_list")
 
 
-# Kurum Silme Sayfası
-class CorporationDeleteView(generic.DeleteView):
-    model = models.Corporation
-    template_name = 'corporation/corporation_delete.html'
-    success_url = reverse_lazy('corporation: corporation_list')
-    success_message = 'Kurum basarıyla silindi.'
-    context_object_name = 'corporation'
+class SubUnitUpdateView(UpdateView):
+    model = SubUnit
+    fields = ["name", "sub_unit_number", "corporation", "unit"]
+    template_name = "subunit_form.html"
+    success_url = reverse_lazy("subunit_list")
 
 
+class SubUnitDeleteView(DeleteView):
+    model = SubUnit
+    template_name = "subunit_confirm_delete.html"
+    success_url = reverse_lazy("subunit_list")
 
 
-
-
-
-class CorporationDetailView(generic.DetailView):
-    model = models.Corporation
-    template_name = 'corporation/corporation_detail.html'
-    context_object_name = 'corporation'
-    
-
-
-
-
-
-# Birim Listeleme Sayfası
-class UnitListView(generic.ListView):
-    model = models.Unit
-    template_name = 'corporation/unit_list.html'
-    context_object_name = 'units'
-    ordering = '-created_at'
-    paginate_by = 10
-
-
-
-
-
-
-# Birim Ekleme Sayfası
-class UnitCreateView(generic.CreateView):
-    model = models.Unit
-    template_name = 'corporation/unit_create.html'
-    form_class = forms.UnitForm
-    success_url = reverse_lazy('corporation: unit_list')  # Birim listesi sayfasına yönlendirildir
-    success_message = 'Birim basarıyla oluşturuldu.'
-
-
-
-
-
-
-# Birim Düzenleme Sayfası
-class UnitUpdateView(generic.UpdateView):
-    model = models.Unit
-    template_name = 'corporation/unit_update.html'
-    form_class = forms.UnitForm
-    success_url = reverse_lazy('corporation: unit_list')
-    success_message = 'Birim basarıyla güncellendi.'
-    context_object_name = 'unit'
-
-
-
-
-
-
-class UnitDetailView(generic.DetailView):
-    model = models.Unit
-    template_name = 'corporation/unit_detail.html'
-    context_object_name = 'unit'
-
-
-
-
-
-
-
-# Birim Silme Sayfası
-class UnitDeleteView(generic.DeleteView):
-    model = models.Unit 
-    template_name = 'corporation/unit_delete.html'
-    success_url = reverse_lazy('corporation: unit_list')
-    success_message = 'Birim basarıyla silindi.'
-    context_object_name = 'unit'
-
-
-
-
-
-# Alt Departman Listeleme Sayfası
-class SubUnitListView(generic.ListView):
-    model = models.SubUnit
-    template_name = 'corporation/subunit_list.html'
-    context_object_name = 'subunits'
-    ordering = '-created_at'
-    paginate_by = 10
-
-
-
-
-
-
-
-# Alt Departman Ekleme Sayfası
-class SubUnitCreateView(generic.CreateView):
-    model = models.SubUnit
-    template_name = 'corporation/subunit_create.html'
-    form_class = forms.SubUnitForm
-    success_url = reverse_lazy('corporation: subunit_list')  # Birim listesi sayfasına yönlendirildir
-    success_message = 'Alt Birim basarıyla oluşturuldu.'
-    context_object_name ='subunit'
-
-
-
-
-
-
-
-class SubUnitUpdateView(generic.UpdateView):
-    model = models.SubUnit
-    template_name = 'corporation/subunit_update.html'
-    form_class = forms.SubUnitForm
-    success_url = reverse_lazy('corporation: subunit_list')
-    success_message = 'Alt Birim basarıyla güncellendi.'
-    context_object_name = 'subunit'
-
-
-
-
-
-
-class SubUnitDetailView(generic.DetailView):
-    model = models.SubUnit
-    template_name = 'corporation/subunit_detail.html'
-    context_object_name = 'subunit'
-
-
-
-
-
-
-
-class SubUnitDeleteView(generic.DeleteView):
-    model = models.SubUnit 
-    template_name = 'corporation/subunit_delete.html'
-    success_url = reverse_lazy('corporation: subunit_list')
-    success_message = 'Alt Birim basarıyla silindi.'
-    context_object_name = 'subunit'
-
-
-
-
-
-
-
-
-
-
+class SubUnitListView(ListView):
+    model = SubUnit
+    template_name = "subunit_list.html"
+    context_object_name = "subunits"
