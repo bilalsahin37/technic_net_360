@@ -9,9 +9,7 @@ from django.urls import include, path
 
 from apps.userauths.views import UserCreateView
 
-from . import views
 
-app_name = "location"
 
 urlpatterns = [
     # Yönetim Paneli

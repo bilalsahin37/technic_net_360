@@ -1,25 +1,32 @@
+# apps/users/urls.py
+
 from django.urls import path
 from .views import (
+    UserListView,
+    UserDetailView,
     UserCreateView,
     UserUpdateView,
     UserDeleteView,
-    UserListView,
-    UserDetailView,
+    ProfileDetailView,
+    ProfileCreateView,
+    ProfileUpdateView,
+    ProfileDeleteView,
 )
 
-app_name = "userauths"  # Uygulama isim alanı (namespace)
-
 urlpatterns = [
-    # Kullanıcı Kayıt Sayfası
-    path("signup/", UserCreateView.as_view(), name="user-create"),
-    # Kullanıcı Güncelleme Sayfası (pk: primary key parametresi)
-    path("update/<int:pk>/", UserUpdateView.as_view(), name="user-update"),
-    # Kullanıcı Silme Sayfası
-    path("delete/<int:pk>/", UserDeleteView.as_view(), name="user-delete"),
-    # Kullanıcı Listeleme Sayfası
-    path("list/", UserListView.as_view(), name="user-list"),
-    # Kullanıcı Detay Sayfası
-    path("detail/<int:pk>/", UserDetailView.as_view(), name="user-detail"),
+    # Kullanıcı URL'leri
+    path("users/", UserListView.as_view(), name="user_list"),
+    path("users/<int:pk>/", UserDetailView.as_view(), name="user_detail"),
+    path("users/create/", UserCreateView.as_view(), name="user_create"),
+    path("users/<int:pk>/update/", UserUpdateView.as_view(), name="user_update"),
+    path("users/<int:pk>/delete/", UserDeleteView.as_view(), name="user_delete"),
+    # Profil URL'leri
+    path("profiles/<int:pk>/", ProfileDetailView.as_view(), name="profile_detail"),
+    path("profiles/create/", ProfileCreateView.as_view(), name="profile_create"),
+    path(
+        "profiles/<int:pk>/update/", ProfileUpdateView.as_view(), name="profile_update"
+    ),
+    path(
+        "profiles/<int:pk>/delete/", ProfileDeleteView.as_view(), name="profile_delete"
+    ),
 ]
-
-
