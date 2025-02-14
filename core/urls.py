@@ -15,7 +15,7 @@ urlpatterns = [
     # Yönetim Paneli
     path("admin/", admin.site.urls),
     # User Authentication: Kullanıcı kayıt, giriş vb.
-    path("accounts/", include("apps.userauths.urls", namespace="userauths")),
+    path("accounts/", include("apps.userauths.urls")),
     path("signup/", UserCreateView.as_view()),
     # Corporation: Kurum bilgileri ve işlemleri
     path("corporations/", include("apps.corporation.urls")),

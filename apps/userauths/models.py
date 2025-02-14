@@ -8,6 +8,9 @@ from datetime import date
 from apps.corporation.models import Corporation, Unit
 
 
+
+
+
 # Ortak zaman damgası alanları için soyut model
 class TimeStampedModel(models.Model):
     created_at = models.DateTimeField(
@@ -19,6 +22,12 @@ class TimeStampedModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+
+
+
+
 
 
 # Özel Kullanıcı Yöneticisi
@@ -44,6 +53,12 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(email, password, **extra_fields)
+
+
+
+
+
+
 
 
 # Optimize Edilmiş Custom User Model
@@ -235,6 +250,12 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         ordering = ["email"]
 
 
+
+
+
+
+
+
 # Destekleyici Modeller (TimeStampedModel'dan türetiliyor)
 class Gender(TimeStampedModel):
     name = models.CharField(
@@ -312,6 +333,12 @@ class Duty(TimeStampedModel):
         verbose_name_plural = _("Görevler")
 
 
+
+
+
+
+
+
 class Profile(TimeStampedModel):
     user = models.OneToOneField(
         User,
@@ -337,6 +364,12 @@ class Profile(TimeStampedModel):
     class Meta:
         verbose_name = _("Profil")
         verbose_name_plural = _("Profiller")
+
+
+
+
+
+
 
 
 class Address(TimeStampedModel):
