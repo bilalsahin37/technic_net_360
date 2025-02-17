@@ -10,16 +10,10 @@ from django.urls import include, path
 from apps.userauths.views import UserCreateView
 
 urlpatterns = [
-    # Admin Panel
     path("admin/", admin.site.urls),
-    # User Authentication: User registration, login, etc.
     path("accounts/", include("apps.userauths.urls")),
-    path("signup/", UserCreateView.as_view()),
-    # Corporation: Corporation information and operations
-    path("corporations/", include("apps.corporation.urls")),
-    # Technic Service: Technical service operations
+    path("corporations/", include("apps.corporations.urls")),
     path("technic-service/", include("apps.technic_service.urls")),
-    # Add your URL patterns here
 ]
 
 # URL configuration for static and media files in DEBUG mode
