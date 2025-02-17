@@ -23,9 +23,8 @@ class Unit(models.Model):
     unit_number = models.CharField(max_length=100, blank=True, null=True, verbose_name="Birim Numarası")
     corporation = models.ForeignKey(Corporation, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Kurum")
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
-
     class Meta:
         verbose_name_plural = 'Birimler'
         verbose_name = 'Birim'

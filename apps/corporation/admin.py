@@ -20,7 +20,7 @@ class UnitAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     list_per_page = 20
     ordering = ("-created_at",)
-    autocomplete_fields = ["corporation"]  # Kurum arama için otomatik tamamlama
+    autocomplete_fields = ["corporation"]  # Auto-complete for corporation search
 
 
 @admin.register(SubUnit)

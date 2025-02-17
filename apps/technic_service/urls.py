@@ -4,7 +4,7 @@ from . import views
 app_name = "technic_service"
 
 urlpatterns = [
-    # Müşteri URL'leri
+    # Müşteri URL'leri  # noqa: E501
     path("customers/", views.CustomerListView.as_view(), name="customer-list"),
     path("customers/add/", views.CustomerCreateView.as_view(), name="customer-add"),
     path(
@@ -17,7 +17,7 @@ urlpatterns = [
         views.CustomerUpdateView.as_view(),
         name="customer-edit",
     ),
-    # Araç URL'leri
+    # Araç URL'leri  # noqa: E501
     path("vehicles/", views.VehicleListView.as_view(), name="vehicle-list"),
     path("vehicles/add/", views.VehicleCreateView.as_view(), name="vehicle-add"),
     path(
@@ -28,7 +28,7 @@ urlpatterns = [
         views.VehicleUpdateView.as_view(),
         name="vehicle-edit",
     ),
-    # Servis Randevusu URL'leri
+    # Servis Randevusu URL'leri  # noqa: E501
     path(
         "appointments/",
         views.ServiceAppointmentListView.as_view(),

@@ -1,6 +1,7 @@
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy
-from .models import Corporation, Unit, SubUnit
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+
+from .models import Corporation, SubUnit, Unit
 
 
 # Corporation Views
