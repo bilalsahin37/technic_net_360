@@ -17,32 +17,33 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "last_name"]  # Updatable fields
 
+
 # apps/technic_service/forms.py
 from django import forms
-from .models import Customer, Vehicle, ServiceAppointment
+
+from .models import Customer, ServiceAppointment, Vehicle
+
 
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'phone',
-            'address'
-        ]
+        fields = ["first_name", "last_name", "email", "phone", "address"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs["class"] = "form-control"
+
+
+from django.contrib.messages.views import SuccessMessageMixin
 
 # apps/technic_service/views.py
 from django.views import generic
-from django.contrib.messages.views import SuccessMessageMixin
-from . import forms
+
+from .forms import CustomerForm  # Import directly from forms
+
 
 class CustomerCreateView(SuccessMessageMixin, generic.CreateView):
-    form_class = forms.CustomerForm
+    form_class = CustomerForm
     template_name = "technic_service/customer_form.html"
     success_message = "Müşteri başarıyla oluşturuldu."
