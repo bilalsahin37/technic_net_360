@@ -12,7 +12,7 @@ from apps.userauths.views import UserCreateView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("apps.userauths.urls")),
-    path("corporations/", include("apps.corporations.urls")),
+    path("corporation/", include("apps.corporation.urls")),
     path("technic-service/", include("apps.technic_service.urls")),
 ]
 

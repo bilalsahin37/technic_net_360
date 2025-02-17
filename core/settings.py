@@ -8,8 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%w%!c-k5%f4)(poxpyl8om4-(uw*tjieadfqvqi+fue7*b=!75'
+SECRET_KEY = 'django-insecure-%w%!c-k5%f4)(validword1-(uw*validword2+fue7*b=!75'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     
-    "jazzmin",
+    "jazzmin",  # Django Jazzmin theme
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     
     # Custom Apps
-    "apps.userauths",
+    "apps.userauths",  # Custom user authentication app
     "apps.corporation",
     "apps.technic_service",
     
@@ -133,10 +133,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = "userauths.User"
+AUTH_USER_MODEL = "userauths.User"  # Custom user model
 
 
-JAZZMIN_SETTINGS = {
+JAZZMIN_SETTINGS = {  # Django Jazzmin settings
     "site_title": "Technic Service",
     "site_header": "Technic Service",
     "site_brand": "Technic Service 360",
