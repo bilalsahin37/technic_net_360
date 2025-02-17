@@ -9,22 +9,20 @@ from django.urls import include, path
 
 from apps.userauths.views import UserCreateView
 
-
-
 urlpatterns = [
-    # Yönetim Paneli
+    # Admin Panel
     path("admin/", admin.site.urls),
-    # User Authentication: Kullanıcı kayıt, giriş vb.
+    # User Authentication: User registration, login, etc.
     path("accounts/", include("apps.userauths.urls")),
     path("signup/", UserCreateView.as_view()),
-    # Corporation: Kurum bilgileri ve işlemleri
+    # Corporation: Corporation information and operations
     path("corporations/", include("apps.corporation.urls")),
-    # Technic Service: Teknik servis işlemleri
+    # Technic Service: Technical service operations
     path("technic-service/", include("apps.technic_service.urls")),
     # Add your URL patterns here
 ]
 
-# DEBUG modunda statik ve medya dosyaları için URL yapılandırması
+# URL configuration for static and media files in DEBUG mode
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
